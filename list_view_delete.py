@@ -11,12 +11,12 @@ class MainApp(MDApp):
 
     def build(self):
         if len(self.note_list) == 0:
-            self.note_list = []
             self.update_list()
 
         return Builder.load_file("list_view_delete.kv")
 
     def on_start(self):
+        # showing the data in the list
         lists = self.root.ids.list
         for i in range(self.counter):
             lists.add_widget(OneLineListItem(
@@ -24,22 +24,22 @@ class MainApp(MDApp):
                 on_press=self.delete_note
             ))
 
+    # delete note within the list
     def delete_note(self, obj):
         val = obj.text
         values.remove(int(val))
         print(values)
 
         self.update_list()
+        self.update_list_view()
 
     def update_list(self):
         self.note_list = values
         self.counter = len(values)
-        self.update_list_view()
 
     def update_list_view(self):
         self.root.ids.list.clear_widgets()
         self.on_start()
-
 
 
 if __name__ == '__main__':

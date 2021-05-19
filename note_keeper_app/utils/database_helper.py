@@ -7,7 +7,7 @@ class DatabaseHelper:
     # Initialize the database connection
     def initialize_database(self, path):
         act_path = os.path.join(path, 'notes.db')
-        self.conn = sqlite3.connect(act_path)
+        self.conn = sqlite3.connect(act_path, check_same_thread=False)
         self.cur = self.conn.cursor()
 
     # Creating Table

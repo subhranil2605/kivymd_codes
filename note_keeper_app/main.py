@@ -5,6 +5,7 @@ import asynckivy
 # kivy imports
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
+from kivy.clock import Clock
 
 # project imports
 from utils.database_helper import DatabaseHelper
@@ -26,6 +27,7 @@ class MainApp(MDApp):
         Builder.load_file('screens/all_notes.kv')
         Builder.load_file('models/list_item.kv')
         Builder.load_file('screens/show_note.kv')
+        Builder.load_file('screens/loading_screen.kv')
 
     def on_start(self):
         self.database = DatabaseHelper()
@@ -50,17 +52,22 @@ class MainApp(MDApp):
 
     # Add a note
     def add_note(self):
-        title = self.root.ids.add_note.ids.title.text
-        des = self.root.ids.add_note.ids.descrip.text
-        date = self.getting_date()
+        async def some_task():
+            title = self.root.ids.add_note.ids.title.text
+            des = self.root.ids.add_note.ids.descrip.text
+            date = self.getting_date()
 
-        # Creating a Note object and pass its values
-        note = Note(id=None, title=title, description=des, date=date)
-        self.database.insert_data(note)
+            # Creating a Note object and pass its values
+            note = Note(id=None, title=title, description=des, date=date)
+            current_screen = self.root.current
+            self.change_screen('loading')
+            await asynckivy.run_in_thread(lambda :self.database.insert_data(note))
+            self.clear_the_note_inputs()
+            self.update_lists()
 
-        # Additional work in UI
-        self.clear_the_note_inputs()
-        self.update_lists()
+            self.change_screen(current_screen)
+
+        asynckivy.start(some_task())
 
     # To clear the input fields
     def clear_the_note_inputs(self):
@@ -78,9 +85,14 @@ class MainApp(MDApp):
 
     # delete the note
     def delete_list_item(self, obj):
-        id = self.get_id_from_list_item(obj)
-        self.database.delete_note(id)
-        self.update_lists()
+        async def some_task():
+            id = self.get_id_from_list_item(obj)
+            current_screen = self.root.current
+            self.change_screen('loading')
+            await asynckivy.run_in_thread(lambda :self.database.delete_note(id))
+            self.update_lists()
+            self.change_screen(current_screen)
+        asynckivy.start(some_task())
 
     # getting note id from list item
     def get_id_from_list_item(self, obj):
@@ -109,13 +121,17 @@ class MainApp(MDApp):
         self.change_screen('show_note')
 
     def update_note(self, obj):
-        uid = obj.id
-        date = self.getting_date()
-        title = obj.ids.show_title.text
-        description = obj.ids.show_description.text
-
-        self.database.update_data(title=title, description=description, date=date, id=uid)
-        self.update_lists()
+        async def some_task():
+            uid = obj.id
+            date = self.getting_date()
+            title = obj.ids.show_title.text
+            description = obj.ids.show_description.text
+            current_screen = self.root.current
+            self.change_screen('loading')
+            await asynckivy.run_in_thread(lambda : self.database.update_data(title=title, description=description, date=date, id=uid))
+            self.update_lists()
+            self.change_screen(current_screen)
+        asynckivy.start(some_task())
 
 
 if __name__ == '__main__':

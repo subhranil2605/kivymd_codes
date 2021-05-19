@@ -1,4 +1,5 @@
 import sqlite3
+from note_keeper_app.models.note import Note
 
 
 class DatabaseHelper:
@@ -18,22 +19,22 @@ class DatabaseHelper:
     # Fetching all the data from the database as a list
     def fetch_data(self):
         result = self.cur.execute("SELECT * FROM note_table")
-        for row in result:
-            print(row[0])
+        note_list = [Note.list_to_note(row) for row in result]
+        return note_list
 
     # Inserting data
 
-    def insert_data(self, title, des):
+    def insert_data(self, note: Note):
         try:
             self.cur.execute(
-                f'INSERT INTO note_table (title, description) VALUES (?, ?)', (title, des))
+                f'INSERT INTO note_table (title, description) VALUES (?, ?)', (note.title, note.description))
             self.conn.commit()
 
         except Exception as e:
             print(str(e))
 
     # Deleting the data
-    def delete_data(self, id):
+    def delete_note(self, id):
         try:
             self.cur.execute(''' 
                 DELETE FROM note_table WHERE id = ?
@@ -48,37 +49,3 @@ class DatabaseHelper:
         self.conn.commit()
         self.conn.close()
 
-
-# database = DatabaseHelper()
-# database.initialize_database()
-# database.create_table()
-# database.insert_data("Roni", "Des")
-# database.delete_data(1)
-# database.fetch_data()
-# database.close_connection()
-# print("done")
-
-
-# class Note:
-#     def __init__(self, title, description, id=None):
-#         self.title = title
-#         self.description = description
-#         self.id = id
-
-#     @classmethod
-#     def create_note_from_dict(cls, note_data: dict):
-#         return cls(
-#             title=note_data['title'],
-#             description=note_data['description']
-#         )
-
-
-# note = Note("my my", "friza")
-# print(note.title)
-# print(note.description)
-# print(note.id)
-# my_note = {'title': "hyyy", "description": "gnfjg"}
-# test = Note.create_note_from_dict(my_note)
-# print(test.title)
-# print(test.description)
-# print(test.id)

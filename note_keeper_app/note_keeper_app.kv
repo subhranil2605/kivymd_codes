@@ -1,0 +1,20 @@
+#:import AddNote screens.add_note.AddNote
+#:import AllNotes screens.all_notes.AllNotes
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+
+ScreenManager:
+    transition: NoTransition()
+
+    AllNotes:
+        name: "all_notes"
+        id: all_notes
+
+    AddNote:
+        name: "add_note"
+        id: add_note
+
+
+
+
+
+

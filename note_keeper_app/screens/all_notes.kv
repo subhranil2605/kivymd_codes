@@ -1,0 +1,28 @@
+<AllNotes>:
+    MDFloatLayout:
+        MDBoxLayout:
+            orientation: 'vertical'
+
+            MDToolbar:
+                title: "Notes"
+                pos_hint: {"top": 1}
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                padding: 10, 0, 10, 10       # L T R B
+                spacing: 10
+
+                ScrollView:
+
+                    MDList:
+                        id: note_lists
+
+        MDFloatingActionButton:
+            icon: "plus"
+            pos_hint: {"right": 0.95, 'y': 0.01}
+            elevation_normal: 12
+            on_release: app.change_screen('add_note')
+
+
+
+

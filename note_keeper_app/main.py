@@ -1,6 +1,8 @@
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
 
+from utils.database_helper import DatabaseHelper
+
 KV = '''
 MDScreen:
     
@@ -32,12 +34,23 @@ MDScreen:
 
 
 class MainApp(MDApp):
+    database = None
+
     def build(self):
         return Builder.load_string(KV)
 
+    def on_start(self):
+        self.database = DatabaseHelper()
+        self.database.initialize_database()
+        self.database.create_table()
+
     def add_note(self):
-        print(self.root.ids.title.text)
-        print(self.root.ids.descrip.text)
+        title = self.root.ids.title.text
+        des = self.root.ids.descrip.text
+        self.database.insert_data(title, des)
+
+    def on_stop(self):
+        self.database.close_connection()
 
 
 if __name__ == '__main__':

@@ -59,26 +59,26 @@ class DatabaseHelper:
 # print("done")
 
 
-class Note:
-    def __init__(self, title, description, id=None):
-        self.title = title
-        self.description = description
-        self.id = id
+# class Note:
+#     def __init__(self, title, description, id=None):
+#         self.title = title
+#         self.description = description
+#         self.id = id
 
-    @classmethod
-    def create_note_from_dict(cls, note_data: dict):
-        return cls(
-            title=note_data['title'],
-            description=note_data['description']
-        )
+#     @classmethod
+#     def create_note_from_dict(cls, note_data: dict):
+#         return cls(
+#             title=note_data['title'],
+#             description=note_data['description']
+#         )
 
 
 # note = Note("my my", "friza")
 # print(note.title)
 # print(note.description)
 # print(note.id)
-my_note = {'title': "hyyy", "description": "gnfjg"}
-test = Note.create_note_from_dict(my_note)
-print(test.title)
-print(test.description)
-print(test.id)
+# my_note = {'title': "hyyy", "description": "gnfjg"}
+# test = Note.create_note_from_dict(my_note)
+# print(test.title)
+# print(test.description)
+# print(test.id)

@@ -1,0 +1,40 @@
+<ShowNote>:
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDToolbar:
+            left_action_items: [['arrow-left', lambda x: app.change_screen('all_notes')]]
+            right_action_items:
+                [
+                ['content-save', lambda x: app.update_note(self.parent.parent)]
+                ]
+            pos_hint: {'top': 1}
+
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding: 10
+
+            MDTextField:
+                id: show_title
+                hint_text: "Title"
+                line_anim: False
+                active_line: False
+                line_color_normal: 1, 1, 1, 1
+
+            MDBoxLayout:
+
+                TextInput:
+                    id: show_description
+                    background_color: 0, 0, 0, 1
+                    foreground_color: 1, 1, 1, 1
+
+
+
+
+
+
+
+
+

@@ -23,13 +23,26 @@ class DatabaseHelper:
         return note_list
 
     # Inserting data
-
     def insert_data(self, note: Note):
         try:
             self.cur.execute(
-                f'INSERT INTO note_table (title, description, date) VALUES (?, ?, ?)', (note.title, note.description, note.date))
+                '''INSERT INTO note_table (title, description, date) VALUES (?, ?, ?)''', (note.title, note.description, note.date))
             self.conn.commit()
 
+        except Exception as e:
+            print(str(e))
+
+    def update_data(self, title, description, date, id):
+        try:
+            self.cur.execute('''
+            UPDATE note_table
+            SET title = ?,
+                description = ?,
+                date = ?
+            WHERE id = ?
+            ''', (title, description, date, id))
+
+            self.conn.commit()
         except Exception as e:
             print(str(e))
 

@@ -1,5 +1,6 @@
 #:import AddNote screens.add_note.AddNote
 #:import AllNotes screens.all_notes.AllNotes
+#:import ShowNote screens.show_note.ShowNote
 #:import NoTransition kivy.uix.screenmanager.NoTransition
 
 ScreenManager:
@@ -12,3 +13,7 @@ ScreenManager:
     AddNote:
         name: "add_note"
         id: add_note
+
+    ShowNote:
+        name: "show_note"
+        id: show_note

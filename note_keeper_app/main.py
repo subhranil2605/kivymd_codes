@@ -11,6 +11,7 @@ from models.note import Note
 from models.list_item import ListItem
 
 
+
 # Starting of app
 class MainApp(MDApp):
     database = None
@@ -27,7 +28,7 @@ class MainApp(MDApp):
 
     def on_start(self):
         self.database = DatabaseHelper()
-        self.database.initialize_database()
+        self.database.initialize_database(self.directory)
         self.database.create_table()
 
         self.fetch_data_from_db()
@@ -96,14 +97,8 @@ class MainApp(MDApp):
 
     def getting_date(self):
         datetime_obj = datetime.datetime.now()
-        year = datetime_obj.year
-        month = datetime_obj.month
-        day = datetime_obj.day
-        date = f"{day}-{month}-{year}"
-        hour = datetime_obj.hour
-        minute = datetime_obj.minute
-        sec = datetime_obj.second
-        return f"{date} {hour}:{minute}:{sec}"
+        formatted_date_stamp = datetime_obj.strftime("%d-%m-%Y %I:%M:%S %p")
+        return f"{formatted_date_stamp}"
 
     def show_note(self, obj):
         self.root.ids.show_note.ids.show_title.text = obj.title
@@ -115,7 +110,6 @@ class MainApp(MDApp):
     def update_note(self, obj):
         uid = obj.id
         date = self.getting_date()
-
         title = obj.ids.show_title.text
         description = obj.ids.show_description.text
 

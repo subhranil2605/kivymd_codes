@@ -1,12 +1,13 @@
 import sqlite3
-from note_keeper_app.models.note import Note
-
+from models.note import Note
+import os
 
 class DatabaseHelper:
 
     # Initialize the database connection
-    def initialize_database(self):
-        self.conn = sqlite3.connect('notes.db')
+    def initialize_database(self, path):
+        act_path = os.path.join(path, 'notes.db')
+        self.conn = sqlite3.connect(act_path)
         self.cur = self.conn.cursor()
 
     # Creating Table

@@ -1,0 +1,8 @@
+<ListItem>:
+    text: root.title
+    secondary_text: root.description
+    tertiary_text: root.date
+
+    IconRightWidget:
+        icon: root.icon
+        on_release: app.delete_list_item(self.parent.parent)

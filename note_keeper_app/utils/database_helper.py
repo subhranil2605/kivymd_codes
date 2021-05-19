@@ -12,7 +12,7 @@ class DatabaseHelper:
     # Creating Table
     def create_table(self):
         self.cur.execute('''
-            CREATE TABLE IF NOT EXISTS note_table (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, description TEXT)
+            CREATE TABLE IF NOT EXISTS note_table (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, description TEXT, date TEXT)
         ''')
         self.conn.commit()
 
@@ -27,7 +27,7 @@ class DatabaseHelper:
     def insert_data(self, note: Note):
         try:
             self.cur.execute(
-                f'INSERT INTO note_table (title, description) VALUES (?, ?)', (note.title, note.description))
+                f'INSERT INTO note_table (title, description, date) VALUES (?, ?, ?)', (note.title, note.description, note.date))
             self.conn.commit()
 
         except Exception as e:

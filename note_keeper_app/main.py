@@ -1,3 +1,5 @@
+import datetime
+
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
 
@@ -17,6 +19,7 @@ class MainApp(MDApp):
     def load_all_kv_files(self):
         Builder.load_file('screens/add_note.kv')
         Builder.load_file('screens/all_notes.kv')
+        Builder.load_file('models/list_item.kv')
 
     def on_start(self):
         self.database = DatabaseHelper()
@@ -32,19 +35,28 @@ class MainApp(MDApp):
 
         for i in data:
             lists.add_widget(ListItem(
-                text=i.title,
-                secondary_text=i.description,
+                title=i.title,
+                description=i.description,
                 id=i.id,
-                on_press=self.delete_list_item
+                date=i.date
             ))
 
     # Add a note
     def add_note(self):
+        datetime_obj = datetime.datetime.now()
+        year = datetime_obj.year
+        month = datetime_obj.month
+        day = datetime_obj.day
+        date = f"{day}-{month}-{year}"
+        hour = datetime_obj.hour
+        minute = datetime_obj.minute
+        sec = datetime_obj.second
+        date = f"{date} {hour}:{minute}:{sec}"
         title = self.root.ids.add_note.ids.title.text
         des = self.root.ids.add_note.ids.descrip.text
 
         # Creating a Note object and pass its values
-        note = Note(id=None, title=title, description=des)
+        note = Note(id=None, title=title, description=des, date=date)
         self.database.insert_data(note)
 
         self.clear_the_note_inputs()
